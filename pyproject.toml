@@ -1,0 +1,54 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+select = ["E", "F", "I", "W", "N", "UP", "ANN", "B", "A", "COM", "C4", "DTZ", "ISC", "ICN", "G", "PIE", "PYI", "PT", "Q", "RET", "SIM", "TID", "ARG", "ERA", "PD", "PGH", "PL", "TRY", "NPY", "RUF"]
+ignore = ["ANN101", "ANN102", "ANN401", "COM812", "ISC001", "E203"]
+unfixable = ["F401", "F841"]
+
+[tool.ruff.isort]
+known-first-party = ["project_template"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+skips = ["B101"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+strict_optional = true
+
+[tool.poetry]
+name = "python-rap-template"
+version = "0.1.0"
+description = "A reproducible analytical pipeline template for a Python project"
+authors = ["ONSdigital"]
+license = "MIT"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.group.dev.dependencies]
+bandit = "^1.8.6"
+pytest = "^8.4.1"
+pytest-xdist = "^3.8.0"
+ruff = "^0.12.7"
+pytest-cov = "^6.2.1"
+mypy = "^1.9.0"
+pre-commit = "^3.6.2"
