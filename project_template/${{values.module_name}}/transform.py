@@ -9,8 +9,8 @@ logger = logging.getLogger(__name__)
 class DataTransformer:
     """Class for transforming and cleaning data."""
 
-    def __init__(self):
-        self.transformation_log = []
+    def __init__(self) -> None:
+        self.transformation_log: list[str] = []
 
     def clean_data(self, df: pd.DataFrame) -> pd.DataFrame:
         """Clean the data by removing duplicates and handling missing values.
@@ -29,20 +29,20 @@ class DataTransformer:
         duplicates_removed = initial_rows - len(df_cleaned)
 
         if duplicates_removed > 0:
-            logger.info(f"Removed {duplicates_removed} duplicate rows")
+            logger.info("Removed %d duplicate rows", duplicates_removed)
             self.transformation_log.append(f"Removed {duplicates_removed} duplicates")
 
         # Handle missing values - fill numeric columns with median, categorical with mode
         for column in df_cleaned.columns:
-            if df_cleaned[column].isnull().any():
+            if df_cleaned[column].isna().any():
                 if df_cleaned[column].dtype in ["int64", "float64"]:
-                    df_cleaned[column].fillna(df_cleaned[column].median(), inplace=True)
-                    logger.info(f"Filled missing values in {column} with median")
+                    df_cleaned[column] = df_cleaned[column].fillna(df_cleaned[column].median())
+                    logger.info("Filled missing values in %s with median", column)
                 else:
                     mode_value = df_cleaned[column].mode()
                     if not mode_value.empty:
-                        df_cleaned[column].fillna(mode_value[0], inplace=True)
-                        logger.info(f"Filled missing values in {column} with mode")
+                        df_cleaned[column] = df_cleaned[column].fillna(mode_value[0])
+                        logger.info("Filled missing values in %s with mode", column)
 
         return df_cleaned
 
@@ -59,9 +59,7 @@ class DataTransformer:
 
         # Example transformations - adjust based on your data structure
         if "quantity" in df.columns and "price" in df.columns:
-            df_transformed["total_value"] = (
-                df_transformed["quantity"] * df_transformed["price"]
-            )
+            df_transformed["total_value"] = df_transformed["quantity"] * df_transformed["price"]
             logger.info("Added total_value column")
             self.transformation_log.append("Added total_value column")
 
@@ -91,19 +89,15 @@ class DataTransformer:
             if column in df_filtered.columns:
                 if isinstance(criteria, dict):
                     if "min" in criteria:
-                        df_filtered = df_filtered[
-                            df_filtered[column] >= criteria["min"]
-                        ]
+                        df_filtered = df_filtered[df_filtered[column] >= criteria["min"]]
                     if "max" in criteria:
-                        df_filtered = df_filtered[
-                            df_filtered[column] <= criteria["max"]
-                        ]
+                        df_filtered = df_filtered[df_filtered[column] <= criteria["max"]]
                 elif isinstance(criteria, list):
                     df_filtered = df_filtered[df_filtered[column].isin(criteria)]
                 else:
                     df_filtered = df_filtered[df_filtered[column] == criteria]
 
-                logger.info(f"Applied filter on {column}: {criteria}")
+                logger.info("Applied filter on %s: %s", column, criteria)
                 self.transformation_log.append(f"Applied filter on {column}")
 
         return df_filtered

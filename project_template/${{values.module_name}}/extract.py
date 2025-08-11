@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from typing import Any
 
 import pandas as pd
 
@@ -9,10 +10,10 @@ logger = logging.getLogger(__name__)
 class DataExtractor:
     """Class for extracting data from various sources."""
 
-    def __init__(self):
-        self.supported_formats = ['.csv', '.xlsx', '.json']
+    def __init__(self) -> None:
+        self.supported_formats = [".csv", ".xlsx", ".json"]
 
-    def extract_csv(self, file_path: str, **kwargs) -> pd.DataFrame:
+    def extract_csv(self, file_path: str, **kwargs: Any) -> pd.DataFrame:
         """Extract data from CSV file.
 
         Args:
@@ -23,12 +24,12 @@ class DataExtractor:
             DataFrame containing the extracted data
         """
         try:
-            logger.info(f"Extracting data from {file_path}")
-            df = pd.read_csv(file_path, **kwargs)
-            logger.info(f"Successfully extracted {len(df)} rows from {file_path}")
-            return df
-        except Exception as e:
-            logger.error(f"Error extracting data from {file_path}: {e!s}")
+            logger.info("Extracting data from %s", file_path)
+            data = pd.read_csv(file_path, **kwargs)
+            logger.info("Successfully extracted %d rows from %s", len(data), file_path)
+            return data
+        except Exception:
+            logger.exception("Error extracting data from %s", file_path)
             raise
 
     def validate_file_exists(self, file_path: str) -> bool:
@@ -59,7 +60,7 @@ class DataExtractor:
             "exists": True,
             "size_bytes": file_path.stat().st_size,
             "suffix": file_path.suffix,
-            "name": file_path.name
+            "name": file_path.name,
         }
 
 
@@ -76,9 +77,11 @@ def extract_from_source(source_path: str, source_type: str = "csv") -> pd.DataFr
     extractor = DataExtractor()
 
     if not extractor.validate_file_exists(source_path):
-        raise FileNotFoundError(f"Source file not found: {source_path}")
+        msg = f"Source file not found: {source_path}"
+        raise FileNotFoundError(msg)
 
     if source_type.lower() == "csv":
         return extractor.extract_csv(source_path)
-    else:
-        raise ValueError(f"Unsupported source type: {source_type}")
+
+    msg = f"Unsupported source type: {source_type}"
+    raise ValueError(msg)

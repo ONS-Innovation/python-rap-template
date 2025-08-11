@@ -11,11 +11,11 @@ logger = logging.getLogger(__name__)
 class DataLoader:
     """Class for loading data to various destinations."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.supported_formats = [".csv", ".xlsx", ".json", ".parquet"]
-        self.load_summary = {}
+        self.load_summary: dict[str, Any] = {}
 
-    def load_to_csv(self, df: pd.DataFrame, output_path: str, **kwargs) -> bool:
+    def load_to_csv(self, df: pd.DataFrame, output_path: str, **kwargs: Any) -> bool:
         """Load DataFrame to CSV file.
 
         Args:
@@ -27,7 +27,7 @@ class DataLoader:
             True if successful, False otherwise
         """
         try:
-            logger.info(f"Loading {len(df)} rows to {output_path}")
+            logger.info("Loading %d rows to %s", len(df), output_path)
 
             # Ensure directory exists
             output_dir = Path(output_path).parent
@@ -44,15 +44,15 @@ class DataLoader:
                 "status": "success",
             }
 
-            logger.info(f"Successfully loaded data to {output_path}")
+            logger.info("Successfully loaded data to %s", output_path)
             return True
 
         except Exception as e:
-            logger.error(f"Error loading data to {output_path}: {e!s}")
+            logger.exception("Error loading data to %s", output_path)
             self.load_summary[output_path] = {"status": "failed", "error": str(e)}
             return False
 
-    def load_to_parquet(self, df: pd.DataFrame, output_path: str, **kwargs) -> bool:
+    def load_to_parquet(self, df: pd.DataFrame, output_path: str, **kwargs: Any) -> bool:
         """Load DataFrame to Parquet file.
 
         Args:
@@ -64,7 +64,7 @@ class DataLoader:
             True if successful, False otherwise
         """
         try:
-            logger.info(f"Loading {len(df)} rows to {output_path}")
+            logger.info("Loading %d rows to %s", len(df), output_path)
 
             # Ensure directory exists
             output_dir = Path(output_path).parent
@@ -81,15 +81,15 @@ class DataLoader:
                 "status": "success",
             }
 
-            logger.info(f"Successfully loaded data to {output_path}")
+            logger.info("Successfully loaded data to %s", output_path)
             return True
 
         except Exception as e:
-            logger.error(f"Error loading data to {output_path}: {e!s}")
+            logger.exception("Error loading data to %s", output_path)
             self.load_summary[output_path] = {"status": "failed", "error": str(e)}
             return False
 
-    def load_to_json(self, df: pd.DataFrame, output_path: str, **kwargs) -> bool:
+    def load_to_json(self, df: pd.DataFrame, output_path: str, **kwargs: Any) -> bool:
         """Load DataFrame to JSON file.
 
         Args:
@@ -101,7 +101,7 @@ class DataLoader:
             True if successful, False otherwise
         """
         try:
-            logger.info(f"Loading {len(df)} rows to {output_path}")
+            logger.info("Loading %d rows to %s", len(df), output_path)
 
             # Ensure directory exists
             output_dir = Path(output_path).parent
@@ -118,11 +118,11 @@ class DataLoader:
                 "status": "success",
             }
 
-            logger.info(f"Successfully loaded data to {output_path}")
+            logger.info("Successfully loaded data to %s", output_path)
             return True
 
         except Exception as e:
-            logger.error(f"Error loading data to {output_path}: {e!s}")
+            logger.exception("Error loading data to %s", output_path)
             self.load_summary[output_path] = {"status": "failed", "error": str(e)}
             return False
 
@@ -150,9 +150,7 @@ class DataLoader:
             return False
 
 
-def save_to_destination(
-    df: pd.DataFrame, output_path: str, format_type: str = "csv"
-) -> bool:
+def save_to_destination(df: pd.DataFrame, output_path: str, format_type: str = "csv") -> bool:
     """Helper function to save DataFrame to specified destination.
 
     Args:
@@ -166,18 +164,17 @@ def save_to_destination(
     loader = DataLoader()
 
     if not loader.validate_output_path(output_path):
-        logger.error(f"Invalid output path: {output_path}")
+        logger.error("Invalid output path: %s", output_path)
         return False
 
     if format_type.lower() == "csv":
         return loader.load_to_csv(df, output_path)
-    elif format_type.lower() == "parquet":
+    if format_type.lower() == "parquet":
         return loader.load_to_parquet(df, output_path)
-    elif format_type.lower() == "json":
+    if format_type.lower() == "json":
         return loader.load_to_json(df, output_path)
-    else:
-        logger.error(f"Unsupported format type: {format_type}")
-        return False
+    logger.error("Unsupported format type: %s", format_type)
+    return False
 
 
 def create_data_summary(df: pd.DataFrame, output_path: str) -> bool:
@@ -202,7 +199,7 @@ def create_data_summary(df: pd.DataFrame, output_path: str) -> bool:
             "total_columns": len(df.columns),
             "column_names": df.columns.tolist(),
             "data_types": df.dtypes.astype(str).to_dict(),
-            "missing_values": df.isnull().sum().to_dict(),
+            "missing_values": df.isna().sum().to_dict(),
             "numeric_summary": (
                 df_for_summary.describe().to_dict()
                 if len(df_for_summary.select_dtypes(include=["number"]).columns) > 0
@@ -217,9 +214,9 @@ def create_data_summary(df: pd.DataFrame, output_path: str) -> bool:
         with open(output_path, "w") as f:
             json.dump(summary, f, indent=2)
 
-        logger.info(f"Data summary saved to {output_path}")
+        logger.info("Data summary saved to %s", output_path)
         return True
 
-    except Exception as e:
-        logger.error(f"Error creating data summary: {e!s}")
+    except Exception:
+        logger.exception("Error creating data summary")
         return False

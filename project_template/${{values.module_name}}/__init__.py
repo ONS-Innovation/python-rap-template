@@ -1,7 +1,7 @@
 """ETL Pipeline Module."""
 
 import logging
-from typing import Any, Optional
+from typing import Any
 
 from .extract import DataExtractor, extract_from_source
 from .load import DataLoader, create_data_summary, save_to_destination
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class ETLPipeline:
     """Main ETL Pipeline class that orchestrates the entire process."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.extractor = DataExtractor()
         self.transformer = DataTransformer()
         self.loader = DataLoader()
@@ -26,7 +26,7 @@ class ETLPipeline:
         source_type: str = "csv",
         output_format: str = "csv",
         apply_transforms: bool = True,
-        filters: Optional[dict[str, Any]] = None,
+        filters: dict[str, Any] | None = None,
     ) -> bool:
         """Run the complete ETL pipeline.
 
@@ -94,13 +94,12 @@ class ETLPipeline:
 
                 logger.info("ETL pipeline completed successfully")
                 return True
-            else:
-                self.pipeline_summary["load"] = {"status": "failed"}
-                logger.error("ETL pipeline failed during load phase")
-                return False
+            self.pipeline_summary["load"] = {"status": "failed"}
+            logger.error("ETL pipeline failed during load phase")
+            return False
 
         except Exception as e:
-            logger.error(f"ETL pipeline failed: {e!s}")
+            logger.exception("ETL pipeline failed")
             self.pipeline_summary["error"] = str(e)
             return False
 
@@ -119,7 +118,7 @@ def run_etl(
     output_path: str,
     source_type: str = "csv",
     output_format: str = "csv",
-    **kwargs,
+    **kwargs: Any,
 ) -> bool:
     """Convenience function to run ETL pipeline.
 
@@ -134,9 +133,7 @@ def run_etl(
         True if pipeline completed successfully, False otherwise
     """
     pipeline = ETLPipeline()
-    return pipeline.run_pipeline(
-        source_path, output_path, source_type, output_format, **kwargs
-    )
+    return pipeline.run_pipeline(source_path, output_path, source_type, output_format, **kwargs)
 
 
 __all__ = [
