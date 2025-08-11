@@ -157,5 +157,44 @@ cython_debug/
 # Ruff
 .ruff_cache/
 
+# Bandit
+.bandit
+
+# Copier helpers
+copier_scripts/
+
 # DS_Store files
 .DS_Store
+
+# Security and compliance files (should never be committed)
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.der
+*.cer
+config/secrets/
+secrets/
+.secrets
+*.secrets
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE and editor specific files
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+outputs/

@@ -1,9 +1,12 @@
-# Python RAP Template
+# ONS Python Template
 
-[![Build Status](https://github.com/ONS-Innovation/python-rap-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ONS-Innovation/python-rap-template/actions/workflows/ci.yml)
-[![License - MIT](https://img.shields.io/badge/licence%20-MIT-1ac403.svg)](https://github.com/ONS-Innovation/python-rap-template/blob/main/LICENSE)
+[![Build Status](https://github.com/ONSdigital/ons-python-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ONSdigital/ons-python-template/actions/workflows/ci.yml)
+[![License - MIT](https://img.shields.io/badge/licence%20-MIT-1ac403.svg)](https://github.com/ONSdigital/ons-python-template/blob/main/LICENSE)
 
-This repository serves as a template for creating Reproducible Analytical Pipeline (RAP) Python projects, complete with fundamental tooling, CI/CD integration, and policy compliance. It is designed to help RAP developers and data engineers get started quickly with standardised tooling, letting them focus on writing analytical code. The template takes care of directory structures, tool configurations, automated testing, and compliance requirements.
+This repository serves as a template for creating a Python project, complete with fundamental tooling and
+configuration. It is meant to help new python projects get started quickly, letting the user focus on writing code. The
+template takes care of the minutia of directory structures, tool configurations, and automated testing until the user is
+ready to take over.
 
 This template is generated using [Copier](https://github.com/copier-org/copier), an open source tool for rendering
 project from templates and natively supports updating projects as the original template matures.
@@ -33,45 +36,34 @@ template.
 
 ## Features
 
-This template includes comprehensive features to help you get started developing RAP Python projects quickly:
+This template includes a number of features to help you get started developing your Python project quickly:
 
-### 🐍 **Python 3.12+ with Poetry**
-- Modern Python with [Poetry](https://python-poetry.org/) for dependency management
-- Standardised on Poetry only for consistency across ONS projects
-- Lockfile support for reproducible builds
-
-### 🔧 **Sample RAP Code Structure**
-- Modular ETL pipeline components (extract, transform, load)
-- Example data processing workflows
-- Comprehensive logging and error handling
-- Configurable data transformation rules
-
-### 🎯 **Code Quality & Testing**
-- [Ruff](https://github.com/astral-sh/ruff) for fast linting and formatting
-- [MyPy](https://mypy.readthedocs.io/) for static type checking
-- [pytest](https://docs.pytest.org/en/stable/) with coverage reporting
-- Pre-commit hooks for automated quality checks
-
-### 🔒 **Security & Compliance**
-- [Bandit](https://bandit.readthedocs.io/en/latest/) security scanning
-- Secret detection with detect-secrets
-- Enhanced .gitignore with security patterns
-- **Full ONS Policy Compliance**:
-  - GitHub Usage Policy compliance
-  - Software Coding Policy adherence
-  - Software Development Guidelines alignment
-
-### 🚀 **CI/CD & Development**
-- Comprehensive GitHub Actions workflows
-- VS Code devcontainer with recommended extensions
-- Automated testing, linting, security scanning, and type checking
-- Branch protection and code review requirements
-
-### 📚 **Documentation & Standards**
-- Architectural Decision Records (ADRs) for significant choices
-- Comprehensive documentation templates
-- British spelling and ONS standards
-- govcookiecutter alignment
+- Python package/environment management with [Poetry](https://python-poetry.org/)
+  or [Pipenv](https://pipenv.pypa.io/en/latest/)
+- Python Linting/Formatting with:
+    - [Ruff](https://github.com/astral-sh/ruff) - An all-in-one alternative to tools such as flake8, isort, pydocstyle,
+      pyupgrade, autoflake etc.
+- Testing with [pytest](https://docs.pytest.org/en/stable/)
+- Code Coverage with [pytest-cov](https://pytest-cov.readthedocs.io/en/latest/)
+- Security Scanning with [Bandit](https://bandit.readthedocs.io/en/latest/)
+- Continuous Integration using [GitHub Actions](https://docs.github.com/en/actions) with jobs to lint and test your
+  project.
+- Security with:
+    - GitHub [Dependabot](https://docs.github.com/en/code-security/getting-started/dependabot-quickstart-guide)
+      Security & Version Updates
+    - GitHub [CodeQL](https://codeql.github.com/) Scanning (Public Repos Only)
+- A Makefile containing commands to automate common tasks such as installing, testing, linting, formatting the project.
+- A GitHub Issue and Pull Request template to help you get started with your project.
+- Basic configuration for [EditorConfig](https://editorconfig.org/) to maintain consistent coding styles across various
+  editors and IDEs.
+- Extensible Python linting and formatting configuration using pyproject.toml, ensuring adherence to best practices.
+- Linting the rest of the repository files/formats such as YAML, GitHub Actions, Shell scripts etc.
+- **GitHub Usage Policy Compliance** including:
+    - CODEOWNERS file generation
+    - Repository naming validation
+    - PIRR template for private/internal repositories
+    - Compliance checklist in generated README
+    - Enhanced security patterns in .gitignore
 
 ## Getting Started
 
@@ -138,7 +130,7 @@ questions, Copier will generate the project for you.
 To generate the project run:
 
 ```bash
-copier copy --trust gh:ONS-Innovation/python-rap-template /path/to/your/new/project
+copier copy --trust gh:ONS-Innovation/ons-python-template-simple /path/to/your/new/project
 ```
 
 Replace `/path/to/your/new/project` with the path to the directory where you want to create your new project. This
@@ -254,11 +246,11 @@ The structure of the templated repo is as follows:
 │   ├── ISSUE_TEMPLATE.md             # Template for issues raised in the repository.
 │   ├── PULL_REQUEST_TEMPLATE.md      # Template for pull requests raised in the repository.
 │   └── release.yml                   # Configuration on how to categorise changes into a structured changelog when using 'Generate release notes' feature.
-├── {module_name}/                    # Main Python package directory containing RAP pipeline code.
-│   ├── __init__.py                   # Initialises the directory as a Python package with ETLPipeline class.
-│   ├── extract.py                    # Data extraction functionality with DataExtractor class.
-│   ├── transform.py                  # Data transformation and cleaning with DataTransformer class.
-│   └── load.py                       # Data loading and output functionality with DataLoader class.
+├── app                               # Main Python package directory for the project, containing source code.
+│   ├── __init__.py                   # Initialises the directory as a Python package, allowing its modules to be imported.
+│   ├── extract.py                    # Example ETL extract module.
+│   ├── transform.py                  # Example ETL transform module.
+│   └── load.py                       # Example ETL load module.
 └── tests                             # Contains all test files.
     ├── e2e                           # Directory for end-to-end tests.
     │   └── test_etl_workflow.py      # End-to-end tests for the ETL workflow.
@@ -277,9 +269,10 @@ The structure of the templated repo is as follows:
 ├── LICENSE                           # The license under which the project is made available.
 ├── Makefile                          # A script used with the make build automation tool, containing commands to automate common tasks.
 ├── PIRR.md                           # Private Internal Reasoning Record (PIRR) for the repository, documenting the reasoning for the private/internal status of the repository. (Private/Internal Repos Only)
-├── poetry.lock                       # Lock file for Poetry, pinning exact versions of dependencies to ensure consistent builds.
-├── pyproject.toml                    # Central project configuration file for Python, used by Poetry and tools like Ruff, MyPy, etc.
-├── run_etl.py                        # Example script demonstrating RAP pipeline usage with multiple execution methods.
+├── poetry.lock                       # Lock file for Poetry, pinning exact versions of dependencies to ensure consistent builds. (Exists if poetry is selected as the package manager)
+├── pyproject.toml                    # Central project configuration file for Python, used by Poetry package manager and tools like Ruff, black etc.
+├── Pipfile                           # Used by pipenv package manager to specify dependencies and their versions. (Exists if pipenv is selected as the package manager)
+├── Pipfile.lock                      # Lock file for Poetry, pinning exact versions of dependencies to ensure consistent builds. (Exists if pipenv is selected as the package manager)
 ├── README.md                         # The main README file providing an overview of the project, setup instructions, and other essential information.
 └── SECURITY.md                       # A security policy for the project, providing information on how to report security vulnerabilities.
 ```
@@ -291,13 +284,17 @@ The structure of the templated repo is as follows:
 Although this template is opinionated, there are many alternatives to the tools used in this template which you may
 prefer. See the [Alternatives Software/Tools][alternative-software-tools] section for more information.
 
-*1. Why use Poetry exclusively?*
+*1. Why use Poetry?*
 
 - *Poetry is a modern Python package management tool that simplifies dependency management and packaging. It is also
-  a build tool that can be used to package your project into a distributable format.*
-- *Poetry provides robust dependency resolution, lockfile support, and integrated virtual environment management.*
-- *By standardising on Poetry only, we ensure consistency across all ONS RAP projects and eliminate configuration complexity.*
-- *Poetry aligns with modern Python best practices and is increasingly adopted in the data science community.*
+  a build tool that can be used*
+  to package your project into a distributable format.
+- *Poetry is also a dependency manager that allows you to declare the libraries your project depends on, and it will
+  manage (install/update) them
+  for you.*
+- *Poetry also creates a virtual environment for your project and manages the dependencies in that environment.*
+- *When running manually you can choose to use `pipenv` instead of `poetry` via the `package_manager` selection
+  question.*
 
 *2. What is Ruff and why use Ruff?*
 
@@ -328,12 +325,13 @@ prefer. See the [Alternatives Software/Tools][alternative-software-tools] sectio
   documentation.*
 - *SuperLinter does not allow auto-fixing of issues, which is a feature of MegaLinter.*
 
-*7. Why does this focus on RAP/ETL patterns rather than web applications?*
+*7. Why does this not provide a full example of a Python project, i.e a Flask app, FastAPI app, Python package etc.?*
 
-- *This template is specifically designed for Reproducible Analytical Pipeline (RAP) development, which is the primary use case for data analysis projects at ONS.*
-- *The included sample code demonstrates common data processing patterns: extraction, transformation, and loading of data.*
-- *For web applications, other ONS templates or frameworks like Flask/FastAPI would be more appropriate.*
-- *The RAP focus ensures that data analysts and researchers have a solid foundation for analytical work.*
+- *This template is intended as a starting point for new Python projects, not as a comprehensive example. The Python
+  code in this repo is not intended to be used for anything, it is just a placeholder. The idea is that you can create a
+  new repo from this template and then add your own code to it but have necessary the tooling and configuration already
+  set up.*
+- *Flavoured templates, such as for a Flask or FastAPI app, might be considered in the future.*
 
 *8. My projects do not have a CodeQL workflow. Why?*
 
@@ -351,13 +349,13 @@ prefer. See the [Alternatives Software/Tools][alternative-software-tools] sectio
 
 ## Future Plans
 
-- Enhanced RAP-specific examples and workflows
-- Additional data source connectors (databases, APIs, cloud storage)
-- More comprehensive data validation and quality checks
-- Integration with ONS data platforms and services
-- Advanced statistical analysis templates
-- Enhanced documentation and developer guidance
-- Ability to update projects with the latest template changes
+- Add tests
+- Add more documentation and developer guidance
+- Further customisation options for the template:
+    - Ability to choose your own Package Manager (Poetry, Pipenv, PDM, etc.)
+    - Ability to choose your own Linting/Formatting tools
+    - Ability to configure the GitHub repo setting post-generation via GitHub Template feature.
+- Ability to update the project with the latest template changes.
 
 ## Development
 

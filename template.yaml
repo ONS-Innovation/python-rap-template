@@ -1,0 +1,227 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: python-etl-template
+  title: Python ETL Template
+  description: A basic ETL pipeline Python template to jump start a Python project
+  tags:
+    - python
+    - etl
+    - rap
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+spec:
+  owner: "group:default/spotify-backstage-trial-team"
+  type: python
+
+  parameters:
+    - title: Project Settings
+      required:
+        - repository_name
+        - repository_description
+        - repository_owner
+        - catalog_owner
+      properties:
+        repository_owner:
+          title: Organisation Name
+          type: string
+          enum:
+            - ONS-Innovation
+          description: What is the organisation name? (e.g. ONS-Innovation)
+          default: ONS-Innovation
+        repository_name:
+          title: Project Name
+          type: string
+          description: What is your repository name? (Use hyphens or underscores for readability. Avoid special characters, spaces, or uppercase letters - e.g. my-awesome-project)
+          ui:field: EntityNamePicker
+        repository_description:
+          title: Description
+          type: string
+          description: What is your repository description?
+        catalog_owner:
+          title: Catalog Owner
+          type: string
+          description: Who owns your repository? (user or group)
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              - kind: User
+                metadata.annotations.github.com/user-login: { exists: true }
+              - kind: Group
+                metadata.annotations.github.com/team-slug: { exists: true }
+        catalog_system:
+          title: Catalog System
+          type: string
+          description: Which system is this connected to?
+          ui:field: EntityPicker
+          ui:options:
+            catalogFilter:
+              - kind: System
+
+    - title: Repo Settings
+      required:
+        - repository_visibility
+        - default_branch
+      properties:
+        repo_settings:
+          title: Use recommended repo settings?
+          type: boolean
+          default: true
+        repository_visibility:
+          title: Visibility
+          type: string
+          description: What is your repository visibility? (public, internal, private)
+          default: public
+          enum:
+            - public
+            - internal
+            - private
+        default_branch:
+          title: What is your default branch name?
+          type: string
+          default: main
+
+      dependencies:
+        repo_settings:
+          allOf:
+            - if:
+                properties:
+                  repo_settings:
+                    const: false
+              then:
+                required:
+                  - enable_dependabot_version_updates
+                  - dependabot_open_pull_requests_limit
+                  - required_approving_review_count
+                properties:
+                  enable_dependabot_version_updates:
+                    title: "Enable Dependabot version updates? (Note: Security updates are always enabled)"
+                    type: boolean
+                    default: true
+                  dependabot_open_pull_requests_limit:
+                    title: Dependabot PRs
+                    type: integer
+                    description: Maximum number of open pull requests at once for Dependabot version updates
+                    default: 10
+                  dismiss_stale_reviews:
+                    title: Dismiss stale pull request approvals when new commits are pushed?
+                    type: boolean
+                    default: true
+                  required_approving_review_count:
+                    title: Approval Reviews
+                    type: integer
+                    description: Number of approving reviews required to merge a pull request
+                    default: 1
+                  require_last_push_approval:
+                    title: Require approval of the most recent reviewable push?
+                    type: boolean
+                    default: true
+                  require_conversation_resolution:
+                    title: Require conversation resolution before merging?
+                    type: boolean
+                    default: true
+
+    - title: Python Settings
+      properties:
+        custom_module_name:
+          title: Use a custom module name?
+          type: boolean
+          default: false
+
+      dependencies:
+        custom_module_name:
+          allOf:
+            - if:
+                properties:
+                  custom_module_name:
+                    const: true
+              then:
+                required:
+                  - module_name
+                properties:
+                  # TODO: validation of module name
+                  module_name:
+                    title: Custom Module Name
+                    type: string
+                    description: What is your Python module name? (e.g. app/src/<module_name>)
+
+  steps:
+    - id: fetch-entity
+      name: Fetch Catalog Entity
+      action: catalog:fetch
+      input:
+        entityRef: ${{ parameters.catalog_owner }}
+    - id: template
+      name: Fetch Skeleton
+      action: fetch:template
+      input:
+        url: ./project_template
+        templateFileExtension: true
+        values:
+          repository_name: ${{ parameters.repository_name }}
+          repository_description: ${{ parameters.repository_description }}
+          repository_owner: ${{ parameters.repository_owner }}
+          catalog_owner: ${{ parameters.catalog_owner }}
+          catalog_system: ${{ parameters.catalog_system }}
+          code_owners: ${{ steps['fetch-entity'].output.entity.metadata.annotations['github.com/team-slug'] or steps['fetch-entity'].output.entity.metadata.annotations['github.com/user-login'] or user.entity.metadata.annotations['github.com/user-login'] }}
+          repository_visibility: ${{ parameters.repository_visibility }}
+          default_branch: ${{ parameters.default_branch }}
+
+          dependabot_open_pull_requests_limit: ${{ 0 if parameters.enable_dependabot_version_updates == false else (parameters.dependabot_open_pull_requests_limit or 10) }}
+          package_manager: poetry
+          module_name: ${{ parameters.module_name or (parameters.repository_name | lower | replace('-', '_')) }}
+
+          # computed values
+          is_public_repo: ${{ parameters.repository_visibility == "public" }}
+          package_manager_url: "https://python-poetry.org/"
+
+    - id: publish
+      name: Publish
+      action: publish:github
+      input:
+        repoUrl: github.com?owner=${{ parameters.repository_owner }}&repo=${{ parameters.repository_name }}
+        description: ${{ parameters.repository_description }}
+        repoVisibility: ${{ parameters.repository_visibility }}
+        defaultBranch: ${{ parameters.default_branch }}
+        access: ${{ user.entity.metadata.annotations['github.com/user-login'] }}
+  
+        hasIssues: true
+        hasProjects: false
+        hasWiki: false
+        allowAutoMerge: false
+        allowMergeCommit: false
+        allowRebaseMerge: false
+        allowSquashMerge: true
+        allowUpdateBranch: true
+        deleteBranchOnMerge: true
+
+        requiredStatusCheckContexts:
+          - Lint and Test
+          - Bandit Security Scan
+          - Analyze (python)
+        protectEnforceAdmins: true
+        requireCodeOwnerReviews: true
+        requiredLinearHistory: true
+        requiredCommitSigning: true
+
+        dismissStaleReviews: ${{ parameters.dismiss_stale_reviews if not parameters.repo_settings else true }}
+        requiredApprovingReviewCount: ${{ parameters.required_approving_review_count if not parameters.repo_settings else 1 }}
+        requireLastPushApproval: ${{ parameters.require_last_push_approval if not parameters.repo_settings else true }}
+        requiredConversationResolution: ${{ parameters.require_conversation_resolution if not parameters.repo_settings else true }}
+
+        # note: extra work to enable enable_secret_scanning, enable_vulnerability_alerts, or enable_automated_security_fixes
+
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}
