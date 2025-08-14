@@ -29,7 +29,7 @@ def run(config: PipelineConfig) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFram
     agg = aggregate(raw, config.group_by, config.measure)
 
     # Disclosure control
-    th = int(config.disclosure.get("primary_suppression_threshold", 5))
+    th = int(config.disclosure.get("primary_suppression_threshold", 2))
     base = int(config.disclosure.get("rounding_base", 5))
     protected = primary_suppression(agg, th)
     published = rounding(protected, base)
