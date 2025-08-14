@@ -1,0 +1,18 @@
+import unittest
+
+from pathlib import Path
+
+from ${{ values.package_name }}.ingestion import load_table
+
+def test_load_table_example_csv():
+    # Use the actual example_data.csv file
+    example_path = Path(__file__).parent.parent.parent / "example_data.csv"
+    df = load_table(example_path)
+    # Check expected columns from example_data.csv
+    expected_columns = {"product_id", "product_name", "category", "quantity", "price", "date", "customer_id", "region", "sales_rep"}
+    assert set(df.columns) == expected_columns
+    # Check that the file is not empty
+    assert len(df) > 0
+
+if __name__ == "__main__":
+    unittest.main()
