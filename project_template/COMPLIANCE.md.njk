@@ -1,6 +1,6 @@
 # Policy Compliance Checklist
 
-This document verifies compliance with ONS policies for the ${{ values.repository_name }} project.
+This document verifies compliance with ONS policies for the ${{ repository_name }} project.
 
 ## GitHub Usage Policy Compliance
 
@@ -15,12 +15,12 @@ This document verifies compliance with ONS policies for the ${{ values.repositor
 - **Configuration**: 
   - Security updates: Always enabled
   - Version updates: Configurable via template options
-  - Open PR limit: {{ values.dependabot_open_pull_requests_limit or 10 }}
+  - Open PR limit: {{ dependabot_open_pull_requests_limit or 10 }}
 
 ### ✅ CODEOWNERS File
 - **Status**: Generated automatically
 - **Location**: `.github/CODEOWNERS`
-- **Owners**: {{ values.code_owners }}
+- **Owners**: {{ code_owners }}
 
 ### ✅ README File
 - **Status**: Generated with comprehensive documentation
@@ -33,7 +33,7 @@ This document verifies compliance with ONS policies for the ${{ values.repositor
 - **Badge**: License badge included in README
 
 ### ✅ Branching Strategy
-- **Default Branch**: {{ values.default_branch }}
+- **Default Branch**: {{ default_branch }}
 - **Protection Rules**: Configured via Backstage template
 - **Reviews Required**: Minimum 1 approving review
 - **Status Checks**: CI/CD workflows must pass

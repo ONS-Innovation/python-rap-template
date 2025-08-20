@@ -24,15 +24,15 @@ lint:  ## Run all linters (ruff).
 
 .PHONY: security-scan
 security-scan:  ## Run security scan using Bandit.
-	poetry run bandit -r ${{ values.module_name }}
+	poetry run bandit -r ${{ module_name }}
 
 .PHONY: test
 test:  ## Run all the tests and check coverage.
-	poetry run pytest -n auto --cov=${{ values.module_name }} --cov-report term-missing --cov-fail-under=50 tests/
+	poetry run pytest -n auto --cov=${{ module_name }} --cov-report term-missing --cov-fail-under=50 tests/
 
 .PHONY: test-unit
 test-unit: ## Run the unit tests and check coverage.
-	poetry run pytest -n auto --cov=${{ values.module_name }} --cov-report term-missing --cov-fail-under=50 tests/unit
+	poetry run pytest -n auto --cov=${{ module_name }} --cov-report term-missing --cov-fail-under=50 tests/unit
 
 .PHONY: test-e2e
 test-e2e: ## Run the end-to-end tests.

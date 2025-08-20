@@ -1,8 +1,8 @@
 import unittest
 
-from ${{ values.module_name }}.extract import extract_from_source
-from ${{ values.module_name }}.load import save_to_destination
-from ${{ values.module_name }}.transform import apply_business_rules
+from ${{ module_name }}.extract import extract_from_source
+from ${{ module_name }}.load import save_to_destination
+from ${{ module_name }}.transform import apply_business_rules
 
 
 class TestETLWorkflow(unittest.TestCase):

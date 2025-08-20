@@ -12,7 +12,7 @@ ignore = ["ANN401", "COM812", "ISC001", "E203", "G004", "TRY300", "PLR0913", "PD
 unfixable = ["F401", "F841"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["{{ values.module_name }}"]
+known-first-party = ["{{ module_name }}"]
 
 [tool.ruff.format]
 quote-style = "double"
@@ -35,10 +35,10 @@ no_implicit_optional = true
 strict_optional = true
 
 [tool.poetry]
-name = "${{ values.repository_name }}"
+name = "${{ repository_name }}"
 version = "0.1.0"
-description = "${{ values.repository_description }}"
-authors = ["${{ values.repository_owner }}"]
+description = "${{ repository_description }}"
+authors = ["${{ repository_owner }}"]
 license = "MIT"
 readme = "README.md"
 package-mode = false
