@@ -85,8 +85,8 @@ repository_slug:
 is_public_repo:
   type: bool
   help: "Not prompted. This is computed for re-use."
-  default: "{{ repository_visibility == 'public' }}"
-  when: false
+  default: false
+  when: "{{ repository_visibility == 'public' }}"
 
 module_name:
   type: str
