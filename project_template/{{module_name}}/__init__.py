@@ -17,7 +17,7 @@ class ETLPipeline:
         self.extractor = DataExtractor()
         self.transformer = DataTransformer()
         self.loader = DataLoader()
-        self.pipeline_summary = {}
+        self.pipeline_summary: dict[str, object] = {}
 
     def run_pipeline(
         self,
@@ -72,9 +72,7 @@ class ETLPipeline:
                     "final_columns": len(df.columns),
                 }
             else:
-                self.pipeline_summary["transform"] = {
-                    "transformations_applied": ["None - transformations skipped"]
-                }
+                self.pipeline_summary["transform"] = {"transformations_applied": ["None - transformations skipped"]}
 
             # Load
             logger.info("Phase 3: Load")

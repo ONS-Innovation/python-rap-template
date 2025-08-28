@@ -6,24 +6,24 @@ from {{ module_name }}.transform import apply_business_rules
 
 
 class TestETLWorkflow(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.raw_data = extract_from_source("example_data.csv")
         self.transformed_data = apply_business_rules(self.raw_data)
 
-    def test_extract_data(self):
+    def test_extract_data(self) -> None:
         self.assertIsNotNone(self.raw_data)
         self.assertGreater(len(self.raw_data), 0)
 
-    def test_transform_data(self):
+    def test_transform_data(self) -> None:
         self.assertIsNotNone(self.transformed_data)
         self.assertGreater(len(self.transformed_data), 0)
         # Add more assertions based on expected transformations
 
-    def test_load_data(self):
+    def test_load_data(self) -> None:
         result = save_to_destination(self.transformed_data, "test_destination.csv")
         self.assertTrue(result)
 
-    def test_etl_workflow(self):
+    def test_etl_workflow(self) -> None:
         raw_data = extract_from_source("example_data.csv")
         transformed_data = apply_business_rules(raw_data)
         result = save_to_destination(transformed_data, "test_destination.csv")
