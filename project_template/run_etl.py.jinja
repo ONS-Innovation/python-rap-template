@@ -2,7 +2,7 @@
 
 import logging
 
-from ${{ module_name }} import (
+from {{ module_name }} import (
     DataExtractor,
     DataLoader,
     DataTransformer,
@@ -11,7 +11,7 @@ from ${{ module_name }} import (
 )
 
 
-def main():
+def main() -> None:
     """Main function to demonstrate ETL pipeline usage."""
     # Define file paths
     source_file = "example_data.csv"
@@ -74,8 +74,9 @@ def main():
     logger.info("3. Using individual ETL components...")
 
     # Extract
+    from pathlib import Path
     extractor = DataExtractor()
-    df = extractor.extract_csv(source_file)
+    df = extractor.extract_csv(Path(source_file))
     logger.info(f"Extracted {len(df)} rows")
 
     # Transform
