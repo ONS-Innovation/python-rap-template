@@ -4,15 +4,56 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 target-version = "py312"
-line-length = 100
+line-length = 120
+indent-width = 4
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "W", "N", "UP", "ANN", "B", "A", "COM", "C4", "DTZ", "ISC", "ICN", "PIE", "PYI", "PT", "Q", "RET", "SIM", "TID", "ARG", "ERA", "PD", "PGH", "PL", "TRY", "NPY", "RUF"]
-ignore = ["ANN401", "COM812", "ISC001", "E203", "G004", "TRY300", "PLR0913", "PD901"]
+select = [
+    "E",   # pycodestyle erros
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "UP",  # pyupgrade
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+    "C4",  # flake8-comprehensions
+    "S",   # flake8-bandit
+    "D",   # pydocstyle - Enforce existing docstrings only
+    "C90", # mccabe
+    "RUF", # Ruff specific rules
+]
+
+ignore = [
+    # Conflicts with google docstring style
+    "D205",
+    # Allow missing docstring, remove to enforce docstrings across the board
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    # indentation contains tabs
+    "W191",
+    # Too many args in functions
+    "PLR0913",
+]
+
 unfixable = ["F401", "F841"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["{{ module_name }}"]
+known-first-party = ["joejoe"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    # Allow use of assert statements in tests
+    "S101",
+]
 
 [tool.ruff.format]
 quote-style = "double"
@@ -35,10 +76,10 @@ no_implicit_optional = true
 strict_optional = true
 
 [tool.poetry]
-name = "${{ repository_name }}"
+name = "$joejoe"
 version = "0.1.0"
-description = "${{ repository_description }}"
-authors = ["${{ repository_owner }}"]
+description = "$stuff"
+authors = ["ONSdigital"]
 license = "MIT"
 readme = "README.md"
 package-mode = false

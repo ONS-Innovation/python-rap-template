@@ -1,17 +1,17 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: ${{ repository_name }}
-  description: ${{  repository_description | dump }}
+  name: {{ repository_name }}
+  description: {{  repository_description }}
   tags:
     - python
     - etl
   annotations:
     backstage.io/techdocs-ref: dir:.
-    github.com/project-slug: ${{  repository_owner }}/${{ repository_name }}
+    github.com/project-slug: {{  repository_owner }}/{{ repository_name }}
     backstage.io/source-template: "python-etl-template"
   links:
-    - url: https://codespaces.new/${{  repository_owner }}/${{ repository_name }}
+    - url: https://codespaces.new/{{  repository_owner }}/{{ repository_name }}
       title: Open Development Environment 
       icon: scaffolder
     - url: https://officenationalstatistics.sharepoint.com/sites/ONS_DDaT_Communities/SitePages/SE%20-%20Principles,%20Policies,%20Guidelines%20&%20more.aspx?csf=1&web=1&share=EQI8qpmdcZ1MvVA__6yKAtgBkWCMhU-pty-SBeAs1KVAEQ&e=jlgchY
@@ -20,13 +20,13 @@ metadata:
     - url: https://app.pluralsight.com/channels/details/c4f16af4-8278-440c-9ae8-fc9e95f1f34d
       title: Learning Pathway  
       icon: help
-    - url: vscode://vscode.git/clone?url=https://github.com/${{ repository_owner }}/${{ repository_name }}.git
+    - url: vscode://vscode.git/clone?url=https://github.com/{{ repository_owner }}/{{ repository_name }}.git
       title: Open in Local Visual Studio Code
       icon: scaffolder
 spec:
   type: module
   lifecycle: experimental
-  owner: ${{ catalog_owner | dump }}
+  owner: {{ catalog_owner }}
   {%- if catalog_system %}
-  system: ${{ catalog_system | dump }}
+  system: {{ catalog_system }}
   {%- endif %}
