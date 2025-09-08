@@ -154,6 +154,12 @@ require_conversation_resolution:
   default: true
   when: "{{ repo_settings == 'custom' }}"
 
+enable_hypothesis_testing:
+  type: bool
+  help: "Do you want to enable Hypothesis unit testing? (Default is Yes)"
+  default: true
+  when: "{{ repo_settings == 'custom' }}"
+
 # :TODO: Currently updates are not supported until Copier changes how tasks work: https://github.com/copier-org/copier/issues/240:
 # Tasks currently execute twice on updates, which causes issues with the current setup
 enable_copier_updates:
