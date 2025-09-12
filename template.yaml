@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: python-etl-template
-  title: Python ETL Template
+  name: python-rap-template
+  title: Python RAP Template
   description: A basic ETL pipeline Python template to jump start a Python project
   tags:
     - python
