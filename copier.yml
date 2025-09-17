@@ -23,7 +23,8 @@ _tasks:
     REQUIRED_APPROVING_REVIEW_COUNT="{{ required_approving_review_count }}"
     REQUIRE_LAST_PUSH_APPROVAL="{{ require_last_push_approval | lower }}"
     REQUIRE_CONVERSATION_RESOLUTION="{{ require_conversation_resolution | lower }}"
-    ./copier_scripts/run_tasks.sh
+
+#./copier_scripts/run_tasks.sh
 
 # Questions to ask the user
 _message_before_copy: |
@@ -85,8 +86,8 @@ repository_slug:
 is_public_repo:
   type: bool
   help: "Not prompted. This is computed for re-use."
-  default: "{{ repository_visibility == 'public' }}"
-  when: false
+  default: false
+  when: "{{ repository_visibility == 'public' }}"
 
 module_name:
   type: str

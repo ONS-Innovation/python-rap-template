@@ -3,9 +3,9 @@ name: Type Check
 
 on: # yamllint disable-line rule:truthy
   push:
-    branches: [${{ values.default_branch }}]
+    branches: [${{ default_branch }}]
   pull_request:
-    branches: [${{ values.default_branch }}]
+    branches: [${{ default_branch }}]
 
 concurrency:
   {% raw %}
@@ -33,4 +33,4 @@ jobs:
         run: make install-dev
 
       - name: Run MyPy
-        run: poetry run mypy ${{ values.module_name }}
+        run: poetry run mypy ${{ module_name }}

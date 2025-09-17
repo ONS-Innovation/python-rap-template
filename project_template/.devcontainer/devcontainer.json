@@ -2,7 +2,7 @@
     "name": "Python RAP Development",
     "image": "mcr.microsoft.com/devcontainers/python:3.12",
     "features": {
-        "ghcr.io/devcontainers-contrib/features/pre-commit:2": {}
+        "ghcr.io/devcontainers-extra/features/pre-commit:2": {}
     },
     "customizations": {
         "vscode": {
@@ -25,11 +25,11 @@
                 "python.testing.pytestEnabled": true,
                 "editor.formatOnSave": true,
                 "editor.codeActionsOnSave": {
-                    "source.fixAll": true,
-                    "source.organizeImports": true
+                    "source.fixAll": "always",
+                    "source.organizeImports": "always"
                 },
                 "[python]": {
-                    "editor.defaultFormatter": "charliermarsh.ruff"
+                    "editor.defaultFormatter": "ms-python.python"
                 }
             }
         }

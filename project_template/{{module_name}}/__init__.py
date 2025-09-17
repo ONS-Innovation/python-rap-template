@@ -17,7 +17,7 @@ class ETLPipeline:
         self.extractor = DataExtractor()
         self.transformer = DataTransformer()
         self.loader = DataLoader()
-        self.pipeline_summary = {}
+        self.pipeline_summary: dict[str, object] = {}
 
     def run_pipeline(
         self,

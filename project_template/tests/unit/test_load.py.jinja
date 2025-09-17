@@ -2,11 +2,11 @@ import unittest
 
 import pandas as pd
 
-from ${{ values.module_name }}.load import save_to_destination
+from {{ module_name }}.load import save_to_destination
 
 
 class TestLoadData(unittest.TestCase):
-    def test_load_data_success(self):
+    def test_load_data_success(self) -> None:
         # Sample data to load
         data = pd.DataFrame({"id": [1], "name": ["Test"]})
         destination = "test_destination.csv"
@@ -15,12 +15,12 @@ class TestLoadData(unittest.TestCase):
         result = save_to_destination(data, destination)
         self.assertTrue(result)
 
-    def test_load_data_failure(self):
+    def test_load_data_failure(self) -> None:
         # Sample data with an invalid destination
         data = pd.DataFrame({"id": [1], "name": ["Test"]})
-        destination = None  # Invalid destination
+        destination = ""  # Invalid destination (empty string)
 
-        # Assuming load_data raises an exception on failure
+        # Assuming load_data raises an exception or returns False on failure
         result = save_to_destination(data, destination)
         self.assertFalse(result)
 
