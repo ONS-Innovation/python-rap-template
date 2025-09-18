@@ -218,6 +218,15 @@ spec:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
         catalogInfoPath: /catalog-info.yaml
 
+    - id: disable-codeql
+      name: Disable Default CodeQL Setup
+      action: run:script
+      input:
+        interpreter: bash
+        script: |
+          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+          gh api -X PATCH /repos/${{ parameters.repository_owner }}/${{ parameters.repository_name }}/code-scanning/default-setup -f enabled=false
+
   output:
     links:
       - title: Repository
