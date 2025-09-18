@@ -25,7 +25,7 @@ class DataExtractor:
         """
         try:
             logger.info("Extracting data from %s", file_path)
-            data = pd.read_csv(file_path, **kwargs)
+            data: pd.DataFrame = pd.read_csv(file_path, **kwargs)
             logger.info("Successfully extracted %d rows from %s", len(data), file_path)
             return data
         except Exception:
@@ -52,15 +52,14 @@ class DataExtractor:
         Returns:
             Dictionary with file information
         """
-        file_path = Path(file_path)
-        if not file_path.exists():
+        if not Path(file_path).exists():
             return {"exists": False}
 
         return {
             "exists": True,
-            "size_bytes": file_path.stat().st_size,
-            "suffix": file_path.suffix,
-            "name": file_path.name,
+            "size_bytes": Path(file_path).stat().st_size,
+            "suffix": Path(file_path).suffix,
+            "name": Path(file_path).name,
         }
 
 

@@ -11,7 +11,7 @@ from ${{ values.module_name }} import (
 )
 
 
-def main():
+def main() -> None:
     """Main function to demonstrate ETL pipeline usage."""
     # Define file paths
     source_file = "example_data.csv"
@@ -65,7 +65,9 @@ def main():
         logger.info("Pipeline Summary:")
         logger.info(f"- Rows extracted: {summary['extract']['rows_extracted']}")
         logger.info(f"- Final rows after transform: {summary['transform']['final_rows']}")
-        logger.info(f"- Transformations applied: {len(summary['transform']['transformations_applied'])}")
+        logger.info(
+            f"- Transformations applied: {len(summary['transform']['transformations_applied'])}"
+        )
         logger.info(f"- Output file: {summary['load']['output_path']}")
     else:
         logger.error("Filtered ETL pipeline failed!")
