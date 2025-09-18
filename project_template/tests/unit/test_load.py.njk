@@ -1,29 +1,23 @@
-import unittest
-
 import pandas as pd
 
 from ${{ values.module_name }}.load import save_to_destination
 
 
-class TestLoadData(unittest.TestCase):
-    def test_load_data_success(self):
-        # Sample data to load
-        data = pd.DataFrame({"id": [1], "name": ["Test"]})
-        destination = "test_destination.csv"
+def test_load_data_success() -> None:
+    # Sample data to load
+    data = pd.DataFrame({"id": [1], "name": ["Test"]})
+    destination = "test_destination.csv"
 
-        # Assuming load_data returns True on success
-        result = save_to_destination(data, destination)
-        self.assertTrue(result)
-
-    def test_load_data_failure(self):
-        # Sample data with an invalid destination
-        data = pd.DataFrame({"id": [1], "name": ["Test"]})
-        destination = None  # Invalid destination
-
-        # Assuming load_data raises an exception on failure
-        result = save_to_destination(data, destination)
-        self.assertFalse(result)
+    # Assuming load_data returns True on success
+    result = save_to_destination(data, destination)
+    assert result is True
 
 
-if __name__ == "__main__":
-    unittest.main()
+def test_load_data_failure() -> None:
+    # Sample data with an invalid destination
+    data = pd.DataFrame({"id": [1], "name": ["Test"]})
+    destination = ""  # Invalid destination
+
+    # Assuming load_data raises an exception on failure
+    result = save_to_destination(data, destination)
+    assert result is False
