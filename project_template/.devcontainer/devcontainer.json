@@ -2,6 +2,7 @@
     "name": "Python RAP Development",
     "image": "mcr.microsoft.com/devcontainers/python:3.12",
     "features": {
+        "ghcr.io/devcontainers/features/python-poetry:1": {},
         "ghcr.io/devcontainers-contrib/features/pre-commit:2": {}
     },
     "customizations": {
@@ -34,5 +35,5 @@
             }
         }
     },
-    "postCreateCommand": "pip install --upgrade pip && pip install pre-commit && pre-commit install"
+    "postCreateCommand": "pip install --upgrade pip && pip install pre-commit && pre-commit install && make install-dev"
 }
