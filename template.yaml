@@ -217,17 +217,6 @@ spec:
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
         catalogInfoPath: /catalog-info.yaml
-
-    - id: disable-codeql
-      name: Disable Default CodeQL Setup
-      action: github:rest
-      input:
-        method: PATCH
-        path: /repos/${{ parameters.repository_owner }}/${{ parameters.repository_name }}/code-scanning/default-setup
-        headers:
-          accept: application/vnd.github+json
-        body:
-          enabled: false
   output:
     links:
       - title: Repository
