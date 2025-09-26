@@ -1,0 +1,26 @@
+import unittest
+import pandas as pd
+from pathlib import Path
+from ${{ values.package_name }}.disclosure import primary_suppression, rounding
+from ${{ values.package_name }}.ingestion import load_table
+from ${{ values.package_name }}.estimation import aggregate
+
+def test_suppression_and_rounding_real_data():
+    # Load and aggregate example_data.csv
+    example_path = Path(__file__).parent.parent.parent / "example_data.csv"
+    df = load_table(example_path)
+    agg = aggregate(df, ["region", "category"], "quantity")
+    # Apply primary suppression
+    sup = primary_suppression(agg, threshold=2)
+    # Check that suppressed column exists and is boolean
+    assert "suppressed" in sup.columns
+    assert sup["suppressed"].dtype == bool or sup["suppressed"].dtype == object
+    # Apply rounding
+    pub = rounding(sup, base=5)
+    # Check that totals are multiples of 5 (for non-suppressed rows)
+    for t, s in zip(pub["total"], pub["suppressed"]):
+        if not s:
+            assert t % 5 == 0
+
+if __name__ == "__main__":
+    unittest.main()
