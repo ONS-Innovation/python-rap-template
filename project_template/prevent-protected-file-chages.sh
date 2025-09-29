@@ -1,5 +1,5 @@
 #!/bin/bash -e
-#!/bin/bash -e
+
 protected=(
   ".devcontainer"
   ".devcontainer/*"
