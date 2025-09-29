@@ -42,3 +42,9 @@ repos:
       - id: detect-secrets
         args: ['--baseline', '.secrets.baseline']
         exclude: package-lock.json|poetry.lock|Pipfile.lock
+
+  - repo: local
+    hooks:
+      - id: prevent-protected-file-changes
+        name: Prevent changes to protected files
+        entry: bash prevent-protected-file-changes.sh
