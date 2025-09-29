@@ -8,16 +8,24 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                "ms-python.python",
-                "ms-python.vscode-pylance",
-                "ms-python.black-formatter",
                 "charliermarsh.ruff",
-                "ms-azuretools.vscode-docker",
+                "dbaeumer.vscode-eslint",
                 "github.copilot",
                 "github.copilot-chat",
-                "tamasfe.even-better-toml",
+                "github.codespaces",
+                "github.github-vscode-theme",
+                "github.vscode-pull-request-github",
+                "matangover.mypy",
+                "ms-azuretools.vscode-containers",
+                "ms-azuretools.vscode-docker",
+                "ms-python.autopep8",
+                "ms-python.black-formatter",
+                "ms-python.debugpy",
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-python.vscode-python-envs",
                 "redhat.vscode-yaml",
-                "matangover.mypy"
+                "tamasfe.even-better-toml"
             ],
             "settings": {
                 "python.defaultInterpreterPath": "/usr/local/bin/python",
@@ -35,5 +43,5 @@
             }
         }
     },
-    "postCreateCommand": "pip install --upgrade pip && pip install pre-commit && pre-commit install && make install-dev"
+    "postCreateCommand": "pip install --upgrade pip && pip install pre-commit && pre-commit install && make install-dev && poetry env activate"
 }
