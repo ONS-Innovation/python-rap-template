@@ -35,5 +35,5 @@
             }
         }
     },
-    "postCreateCommand": "pip install --upgrade pip && pip install pre-commit && pre-commit install && make install-dev && chmod +x .hooks/prevent-test-files.sh"
+    "postCreateCommand": "pip install --upgrade pip && pip install pre-commit && pre-commit install && make install-dev"
 }
