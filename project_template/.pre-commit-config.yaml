@@ -48,3 +48,11 @@ repos:
       - id: prevent-protected-file-changes
         name: Prevent changes to protected files
         entry: bash prevent-protected-file-changes.sh
+        language: system
+
+  - repo: local
+    hooks:
+      - id: check-vscode-extensions
+        name: Check VSCode extensions against devcontainer whitelist
+        entry: bash check-extensions.sh
+        language: system
