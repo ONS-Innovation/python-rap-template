@@ -7,7 +7,6 @@ INSTALLED_EXTENSIONS=$(code --list-extensions)
 
 declare -A WHITELIST_MAP
 for ext in $WHITELIST; do
-  echo "$ext"
   WHITELIST_MAP["$ext"]=1
 done
 
@@ -15,7 +14,6 @@ UNAPPROVED=()
 
 for ext in $INSTALLED_EXTENSIONS; do
   if ! [[ "$ext" =~ \. ]]; then
-  echo "Ignoring line: $ext"
     continue
   fi
 
