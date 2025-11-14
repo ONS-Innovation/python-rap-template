@@ -1,5 +1,7 @@
 ---
 name: CI
+permissions: 
+  contents: read
 
 on: # yamllint disable-line rule:truthy
   push:
