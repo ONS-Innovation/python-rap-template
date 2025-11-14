@@ -1,0 +1,22 @@
+
+import pandas as pd
+from pathlib import Path
+from ${{ values.package_name }}.estimation import aggregate
+from ${{ values.package_name }}.ingestion import load_table
+
+def test_aggregate_group_quantity():
+    # Use the actual example_data.csv file
+    example_path = Path(__file__).parent.parent.parent / "example_data.csv"
+    df = load_table(example_path)
+    out = aggregate(df, ["region"], "quantity")
+    # Check expected columns
+    assert "region" in out.columns
+    assert "n" in out.columns
+    assert "total" in out.columns
+    assert "mean" in out.columns
+    # Check that there are results for each region
+    regions = set(df["region"].unique())
+    assert set(out["region"]) == regions
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,0 +1,41 @@
+import unittest
+from pathlib import Path
+from ${{ values.package_name }}.ingestion import load_table
+from ${{ values.package_name }}.estimation import aggregate
+from ${{ values.package_name }}.disclosure import primary_suppression, rounding
+
+class TestRAPModulesWorkflow(unittest.TestCase):
+	def setUp(self):
+		self.example_path = Path(__file__).parent.parent.parent / "example_data.csv"
+		self.df = load_table(self.example_path)
+		self.agg = aggregate(self.df, ["region", "category"], "quantity")
+		self.suppressed = primary_suppression(self.agg, threshold=2)
+		self.rounded = rounding(self.suppressed, base=5)
+
+	def test_ingestion(self):
+		self.assertIsNotNone(self.df)
+		self.assertGreater(len(self.df), 0)
+
+	def test_estimation(self):
+		self.assertIsNotNone(self.agg)
+		self.assertIn("total", self.agg.columns)
+		self.assertGreater(len(self.agg), 0)
+
+	def test_disclosure(self):
+		self.assertIn("suppressed", self.suppressed.columns)
+		self.assertIn("total", self.rounded.columns)
+		# Check rounding for non-suppressed rows
+		for t, s in zip(self.rounded["total"], self.rounded["suppressed"]):
+			if not s:
+				self.assertEqual(t % 5, 0)
+
+	def test_rap_workflow(self):
+		df = load_table(self.example_path)
+		agg = aggregate(df, ["region", "category"], "quantity")
+		suppressed = primary_suppression(agg, threshold=2)
+		rounded = rounding(suppressed, base=5)
+		self.assertGreater(len(rounded), 0)
+		self.assertIn("total", rounded.columns)
+
+if __name__ == "__main__":
+	unittest.main()
