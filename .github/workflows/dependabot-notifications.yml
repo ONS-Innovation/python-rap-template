@@ -1,0 +1,16 @@
+name: Receive Dependabot Notifications
+
+on:
+  repository_dispatch:
+    types: [dependabot_notice]
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print received data
+        run: |
+          echo "Child repo event: ${{ github.event.client_payload.repo }}"
+          echo "@ SHA: ${{ github.event.client_payload.sha }}"
+          echo "@ PR Number: ${{ github.event.client_payload.pr_number }}"
+          echo "@ PR URL: ${{ github.event.client_payload.pr_url }}"
