@@ -1,0 +1,8 @@
+# Minimal, declarative knobs for the sample flow
+input_path: "../example_data.csv"
+output_dir: "data/output"
+group_by: ['region', 'category'] 
+measure: "value"
+disclosure:
+  primary_suppression_threshold: 2     # suppress groups with < 5 rows
+  rounding_base: 5                     # round published cells to nearest 5

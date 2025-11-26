@@ -1,0 +1,46 @@
+"""Demonstration script for the RAP pipeline."""
+
+import logging
+from pathlib import Path
+
+from ${{values.package_name}} import (
+    disclosure,
+    estimation,
+    ingestion,
+    pipeline,
+)
+
+def main():
+    # Define file paths
+    source_file = "example_data.csv"
+    output_file = "outputs/processed_data.csv"
+
+    # Configure logging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+
+    logger.info("Step 1: Ingestion - Loading data...")
+    df = ingestion.load_table(source_file)
+    logger.info(f"Loaded data with shape: {df.shape}")
+
+    logger.info("Step 2: Estimation - Aggregating data...")
+    group_by = ["region", "category"]
+    measure = "quantity"
+    agg = estimation.aggregate(df, group_by=group_by, measure=measure)
+    logger.info(f"Aggregated data:\n{agg}")
+
+    logger.info("Step 3: Disclosure - Applying primary suppression and rounding...")
+    threshold = 2
+    base = 5
+    suppressed = disclosure.primary_suppression(agg, threshold=threshold)
+    rounded = disclosure.rounding(suppressed, base=base)
+    logger.info(f"Disclosure controlled results:\n{rounded}")
+
+    # Optionally, save the output
+    output_path = Path(output_file)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    rounded.to_csv(output_path, index=False)
+    logger.info(f"Final output saved to: {output_file}")
+
+if __name__ == "__main__":
+    main()
